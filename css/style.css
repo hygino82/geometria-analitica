@@ -1,0 +1,13 @@
+#entrada {
+    width: 600px;
+    height: 500px;
+    border-radius: 3px;
+    background-color: lightpink;
+}
+
+#resultado {
+    background-color: aquamarine;
+    text-align: center;
+    border: 5px solid black;
+    border-radius: 5px;
+}
