@@ -5,6 +5,7 @@ let ponto_b = document.getElementById('ponto-b');
 let equacao_reta = document.getElementById('equacao-reta');
 let equacao_circunferencia = document.getElementById('equacao-circunferencia');
 let raio1 = document.getElementById('raio-1');
+let circunferencias = document.getElementById('circunferencias');
 
 let escolha = document.getElementById('escolha');
 let choice = '1';
@@ -20,20 +21,31 @@ function getEscolha() {
     switch (choice) {
         case '1':
             equacao_circunferencia.style.display = 'none';
+            ponto_a.style.display = 'block';
             ponto_b.style.display = 'none';
             equacao_reta.display = 'block';
+            circunferencias.style.display = 'none';
             break;
         case '2':
+            ponto_a.style.display = 'block';
             equacao_circunferencia.style.display = 'block';
             ponto_b.style.display = 'block';
             equacao_reta.style.display = 'none';
+            circunferencias.style.display = 'none';
+            break;
+        case '3':
+            equacao_circunferencia.style.display = 'none';
+            ponto_b.style.display = 'none';
+            equacao_reta.style.display = 'none';
+            circunferencias.style.display = 'block';
+            ponto_a.style.display = 'none';
             break;
         default:
             equacao_circunferencia.style.display = 'none';
             ponto_b.style.display = 'none';
             equacao_reta.display = 'block';
     }
-    console.log(`Foi escolhido a opção ${choice}`);
+    //console.log(`Foi escolhido a opção ${choice}`);
 }
 
 escolha.addEventListener('change', getEscolha);
@@ -81,6 +93,49 @@ function distanciaPontoCircunferencia() {
     }
 }
 
+function posicaoCircunferencias() {
+    const r1 = Number(document.getElementById('raio-c1').value);
+    const r2 = Number(document.getElementById('raio-c2').value);
+    const somaRaios = r1 + r2;
+    const diferencaRaios = Math.abs(r1 - r2);
+
+    const A = {
+        x: Number(document.getElementById('cxa').value),
+        y: Number(document.getElementById('cya').value)
+    };
+
+    const B = {
+        x: Number(document.getElementById('cxb').value),
+        y: Number(document.getElementById('cyb').value)
+    };
+
+    if (A == B) {
+        resultado.innerHTML += 'C1 e C2 são concentricas';
+    }
+    else {
+        const distancia = distanciaPontos(A, B);
+        resultado.innerHTML += `<h4>d = ${distancia}</h4><br>`;
+
+        if (distancia > somaRaios) {
+            resultado.innerHTML += 'As circunferências não possuem ponto em comum externo';
+        }
+        else if (distancia == somaRaios) {
+            resultado.innerHTML += 'As circunferências possuem um ponto em comum externo (são tangentes externamentes)';
+        }
+        else if ((distancia < somaRaios) && (distancia > diferencaRaios)) {
+            resultado.innerHTML += 'As circunferências apresentam dois pontos em comum (são secantes)';
+        }
+        else if (distancia == diferencaRaios) {
+            resultado.innerHTML += 'As circunferências possuem um ponto em comum interno (são tangentes internas)';
+        }
+        else {
+            resultado.innerHTML += 'As circunferências não possuem ponto em comum interno';
+        }
+    }
+
+
+}
+
 function calcularValores() {
     resultado.style.display = 'block';
     resultado.innerHTML = '<h2>Resultado</h2><br>';
@@ -92,6 +147,9 @@ function calcularValores() {
             break;
         case '2':
             distanciaPontoCircunferencia();
+            break;
+        case '3':
+            posicaoCircunferencias();
             break;
         default:
             resultado.innerHTML += 'Não implementado ainda';
