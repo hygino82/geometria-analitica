@@ -1,14 +1,20 @@
+body {
+    width: 100%;
+    height: 100%;
+}
+
 #entrada {
     width: 600px;
     height: 500px;
     border-radius: 3px;
-    background-color: lightpink;
+    border: 2px solid black;
+    background-color: rgb(140, 179, 223);
 }
 
 #resultado {
-    background-color: aquamarine;
+    background-color: rgb(224, 231, 127);
     text-align: center;
-    border: 5px solid black;
+    border: 5px dashed rgb(204, 45, 45);
     border-radius: 5px;
     width: 600px;
 }
