@@ -25,6 +25,7 @@ function getEscolha() {
             ponto_b.style.display = 'none';
             equacao_reta.display = 'block';
             circunferencias.style.display = 'none';
+            equacao_reta.style.display = 'block';
             break;
         case '2':
             ponto_a.style.display = 'block';
@@ -109,12 +110,15 @@ function posicaoCircunferencias() {
         y: Number(document.getElementById('cyb').value)
     };
 
-    if (A == B) {
+    if ((A.x == B.x) && (A.y == B.y)) {
         resultado.innerHTML += 'C1 e C2 são concentricas';
     }
     else {
         const distancia = distanciaPontos(A, B);
-        resultado.innerHTML += `<h4>d = ${distancia}</h4><br>`;
+        resultado.innerHTML += 'Posição entre circunferências';
+        resultado.innerHTML += `<h3>R1 + R2 = ${somaRaios}<br>`;
+        resultado.innerHTML += `<h3>R1 - R2 = ${diferencaRaios}<br>`;
+        resultado.innerHTML += `<h3>d = ${distancia}</h3><br>`;
 
         if (distancia > somaRaios) {
             resultado.innerHTML += 'As circunferências não possuem ponto em comum externo';
@@ -132,8 +136,6 @@ function posicaoCircunferencias() {
             resultado.innerHTML += 'As circunferências não possuem ponto em comum interno';
         }
     }
-
-
 }
 
 function calcularValores() {
