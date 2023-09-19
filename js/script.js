@@ -1,102 +1,157 @@
-const distanciaPontos = (a, b) => Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+const distanciaPontoReta = (a, b, c, p) => Math.abs(a * p.x + b * p.y + c) / Math.sqrt(a * a + b * b);
+const distanciaPontos = (p, q) => Math.sqrt(Math.pow(q.x - p.x, 2) + Math.pow(q.y - p.y, 2));
 
+let equacaoReta = document.getElementById('equacao-reta');
 let ponto_a = document.getElementById('ponto-a');
-let ponto_b = document.getElementById('ponto-b');
-let equacao_reta = document.getElementById('equacao-reta');
-let equacao_circunferencia = document.getElementById('equacao-circunferencia');
-let raio1 = document.getElementById('raio-1');
-let circunferencias = document.getElementById('circunferencias');
-
+let circunferencia_1 = document.getElementById('circunferencia-1');
+let circunferencia_2 = document.getElementById('circunferencia-2');
+let btnExecuta = document.getElementById('btn-executa');
 let escolha = document.getElementById('escolha');
-let choice = '1';
 let resultado = document.getElementById('resultado');
 
-const xa = Number(document.getElementById('xa').value);
-const ya = Number(document.getElementById('ya').value);
-const xb = Number(document.getElementById('xb').value);
-const yb = Number(document.getElementById('yb').value);
+function menuEscolha() {
+    const opcao = escolha.value;
 
-function getEscolha() {
-    choice = escolha.value;
-    switch (choice) {
+    switch (opcao) {
         case '1':
-            equacao_circunferencia.style.display = 'none';
+            equacaoReta.style.display = 'block';
             ponto_a.style.display = 'block';
-            ponto_b.style.display = 'none';
-            equacao_reta.display = 'block';
-            circunferencias.style.display = 'none';
-            equacao_reta.style.display = 'block';
+            circunferencia_1.style.display = 'none';
+            circunferencia_2.style.display = 'none';
             break;
         case '2':
+            equacaoReta.style.display = 'none';
             ponto_a.style.display = 'block';
-            equacao_circunferencia.style.display = 'block';
-            ponto_b.style.display = 'block';
-            equacao_reta.style.display = 'none';
-            circunferencias.style.display = 'none';
+            circunferencia_1.style.display = 'block';
+            circunferencia_2.style.display = 'none';
             break;
         case '3':
-            equacao_circunferencia.style.display = 'none';
-            ponto_b.style.display = 'none';
-            equacao_reta.style.display = 'none';
-            circunferencias.style.display = 'block';
+            equacaoReta.style.display = 'none';
             ponto_a.style.display = 'none';
+            circunferencia_1.style.display = 'block';
+            circunferencia_2.style.display = 'block';
+            break;
+        case '4':
+            equacaoReta.style.display = 'block';
+            ponto_a.style.display = 'none';
+            circunferencia_1.style.display = 'block';
+            circunferencia_2.style.display = 'none';
             break;
         default:
-            equacao_circunferencia.style.display = 'none';
-            ponto_b.style.display = 'none';
-            equacao_reta.display = 'block';
+            equacaoReta.style.display = 'none';
+            ponto_a.style.display = 'none';
+            circunferencia_1.style.display = 'none';
+            circunferencia_2.style.display = 'none';
     }
-    //console.log(`Foi escolhido a opção ${choice}`);
 }
 
-escolha.addEventListener('change', getEscolha);
+escolha.addEventListener('click', menuEscolha);
 
-let botao = document.getElementById('botao');
+function calcularValores() {
+    const opcao = escolha.value;
+    resultado.style.display = 'block';
+    resultado.innerHTML = '';
 
-function distanciaPontoReta(x, y) {
+    switch (opcao) {
+        case '1':
+            posicaoPontoReta();
+            break;
+        case '2':
+            posicaoPontoCircunferencia();
+            break;
+        case '3':
+            posicaoCircunferencias();
+            break;
+        case '4':
+            posicaoPontoCircunferencia();
+            break;
+        default: resultado.innerHTML += '<h3>Não implementado ainda</h3>';
+    }
+}
+
+btnExecuta.addEventListener('click', calcularValores);
+
+
+function posicaoPontoReta() {
+
+    const P = {
+        x: Number(document.getElementById('xa').value),
+        y: Number(document.getElementById('ya').value)
+    };
+
     const a = Number(document.getElementById('valor-a').value);
     const b = Number(document.getElementById('valor-b').value);
     const c = Number(document.getElementById('valor-c').value);
-    const d = Math.abs(a * x + b * y + c) / Math.sqrt(a * a + b * b);
 
-    resultado.innerHTML += `<h4>d = ${d}</h4><br>`;
-    resultado.innerHTML += (d > 0) ? '<p>O ponto não pertence a reta</p>' : '<p>O ponto pertence a reta</p>';
-}
+    const distancia = distanciaPontoReta(a, b, c, P);
+    resultado.innerHTML += `<h3>d = ${distancia}</h3><br>`;
 
-function distanciaPontoCircunferencia() {
-
-    const r1 = Number(document.getElementById('raio-1').value);
-    const xa = Number(document.getElementById('xa').value);
-    const ya = Number(document.getElementById('ya').value);
-    const xb = Number(document.getElementById('xb').value);
-    const yb = Number(document.getElementById('yb').value);
-
-
-    const A = {
-        x: xa,
-        y: ya
-    }
-
-    const B = {
-        x: xb,
-        y: yb
-    }
-    const d = distanciaPontos(A, B);
-    resultado.innerHTML += `<h4>d = ${d}</h4><br>`;
-    if (d > r1) {
-        resultado.innerHTML += `<p>O ponto é exteno a circunferência</p>`;
-    }
-    else if (d < r1) {
-        resultado.innerHTML += `<p>O ponto é interno a circunferência</p>`;
+    if (distancia > 0) {
+        resultado.innerHTML += '<h4>O Ponto não pertence a reta</h4>';
     }
     else {
-        resultado.innerHTML += `<p>O ponto pertence circunferência</p>`;
+        resultado.innerHTML += '<h4>O Ponto pertence a reta</h4>';
+    }
+}
+
+function posicaoPontoCircunferencia() {
+
+    const P1 = {
+        x: Number(document.getElementById('xa').value),
+        y: Number(document.getElementById('ya').value)
+    };
+
+    const raio = Math.abs(Number(document.getElementById('raio-c1').value));
+
+    const P2 = {
+        x: Number(document.getElementById('cxa').value),
+        y: Number(document.getElementById('cya').value)
+    };
+
+    const distancia = distanciaPontos(P1, P2);
+    resultado.innerHTML += `<h3>d = ${distancia}</h3><br>`;
+
+    if (distancia > raio) {
+        resultado.innerHTML += '<h4>O Ponto está fora da circunferência</h4>';
+    }
+    else if (distancia == raio) {
+        '<h4>O Ponto é tangente a circunferência</h4>';
+    }
+    else {
+        '<h4>O Ponto está dentro da circunferência/h4>';
+    }
+}
+
+function posicaoRetaCirfunferencia() {
+
+    const a = Number(document.getElementById('valor-a').value);
+    const b = Number(document.getElementById('valor-b').value);
+    const c = Number(document.getElementById('valor-c').value);
+
+    const P = {
+        x: Number(document.getElementById('cxa').value),
+        y: Number(document.getElementById('cya').value)
+    };
+
+    const raio = Math.abs(Number(document.getElementById('raio-c1').value));
+
+    const distancia = distanciaPontoReta(a, b, c, P);
+    resultado.innerHTML += `<h3>d = ${distancia}</h3><br>`;
+
+    if (distancia > raio) {
+        resultado.innerHTML += '<h4>A reta é externa a circunferência</h4>';
+    }
+    else if (distancia == raio) {
+        resultado.innerHTML += '<h4>A reta é tangente a circunferência</h4>';
+    }
+    else {
+        resultado.innerHTML += '<h4>A reta é secante a circunferência</h4>';
     }
 }
 
 function posicaoCircunferencias() {
-    const r1 = Number(document.getElementById('raio-c1').value);
-    const r2 = Number(document.getElementById('raio-c2').value);
+    const r1 = Math.abs(Number(document.getElementById('raio-c1').value));
+    const r2 = Math.abs(Number(document.getElementById('raio-c2').value));
     const somaRaios = r1 + r2;
     const diferencaRaios = Math.abs(r1 - r2);
 
@@ -137,25 +192,3 @@ function posicaoCircunferencias() {
         }
     }
 }
-
-function calcularValores() {
-    resultado.style.display = 'block';
-    resultado.innerHTML = '<h2>Resultado</h2><br>';
-
-    switch (choice) {
-        case '1':
-            resultado.innerHTML += '<h2>Distância de ponto a reta</h2><br>';
-            distanciaPontoReta(xa, ya);
-            break;
-        case '2':
-            distanciaPontoCircunferencia();
-            break;
-        case '3':
-            posicaoCircunferencias();
-            break;
-        default:
-            resultado.innerHTML += 'Não implementado ainda';
-    }
-}
-
-botao.addEventListener('click', calcularValores);
