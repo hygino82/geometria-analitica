@@ -63,7 +63,7 @@ function calcularValores() {
             posicaoCircunferencias();
             break;
         case '4':
-            posicaoPontoCircunferencia();
+            posicaoRetaCirfunferencia();
             break;
         default: resultado.innerHTML += '<h3>Não implementado ainda</h3>';
     }
@@ -146,6 +146,38 @@ function posicaoRetaCirfunferencia() {
     }
     else {
         resultado.innerHTML += '<h4>A reta é secante a circunferência</h4>';
+    }
+
+    const m = -a / b;
+    const n = -c / b;
+    const quad = 1 + Math.pow(m, 2.0);
+    const meio = -2 * (P.x + P.y * m)
+    const ind = Math.pow(P.x, 2.0) + Math.pow(P.y, 2.0) - 2 * P.y * n - Math.pow(raio, 2.0);
+
+    const delta = meio * meio - 4 * quad * ind;
+
+    /* resultado.innerHTML += `<h3>m = ${m.toFixed(4)}</h3>`;
+     resultado.innerHTML += `<h3>n = ${n.toFixed(4)}</h3>`;
+     resultado.innerHTML += `<h3>a = ${quad.toFixed(4)}</h3>`;
+     resultado.innerHTML += `<h3>b = ${meio.toFixed(4)}</h3>`;
+     resultado.innerHTML += `<h3>c = ${ind.toFixed(4)}</h3>`;
+     resultado.innerHTML += `<h2 style="color:red;">delta = ${delta.toFixed(4)}</h2>`;*/
+
+    if (delta < 0) {
+        resultado.innerHTML += '<h3>Não existe pontos da reta que pertençam a circunferencia</h3>';
+    }
+    else if (delta == 0) {
+        const x = -meio / (2 * quad);
+        const y = m * x + n;
+        resultado.innerHTML += `O ponto (${x.toFixed(4)}, ${y.toFixed(4)}) pertence a reta e a circunferência`;
+    }
+    else {
+        const x1 = (-meio + Math.sqrt(delta)) / (2 * quad);
+        const x2 = (-meio - Math.sqrt(delta)) / (2 * quad);
+        const y1 = m * x1 + n;
+        const y2 = m * x2 + n;
+        resultado.innerHTML += '<h3>A reta e a circunferência tem dois pontos em comum</h3>'
+        resultado.innerHTML += `<h3>(${x1.toFixed(4)}, ${y1.toFixed(4)})<br>  (${x2.toFixed(4)}, ${y2.toFixed(4)})</h3>`;
     }
 }
 
